@@ -172,7 +172,6 @@ def re_pair_reads(bamsortfn, copy_number):
             splt2 = pysam.Samfile(read2fn, 'rb')
 
             itrA = splt1.fetch(until_eof=True)
-            itrB = splt2.fetch(until_eof=True)
 
             if (params.GetctDNA()):
                 sigma = 40
@@ -205,7 +204,9 @@ def re_pair_reads(bamsortfn, copy_number):
 
                     minpos = min(poslist) - 1000
                     maxpos = max(poslist) + 1000
-
+                    
+                    itrB = splt2.fetch(start=minpos,stop=maxpos)
+                   
                     while (True):
 
                         readB = itrB.next()
