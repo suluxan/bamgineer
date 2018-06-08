@@ -191,6 +191,7 @@ def re_pair_reads(bamsortfn, copy_number):
                     listb = []
                     readsinblock = []
                     poslist = []
+                    lenlist = []
 
                     while (True):
 
@@ -198,14 +199,17 @@ def re_pair_reads(bamsortfn, copy_number):
                         lista.append(readA)
                         readsinblock.append(readA.qname)
                         poslist.append(readA.pos)
+                        lenlist.append(readA.tlen)
+                        lengthX = readA.qlen
+                        nameX = readA.reference_name
 
                         if (len(lista) == block_size):
                             break
 
-                    minpos = min(poslist) - 1000
-                    maxpos = max(poslist) + 1000
-                    
-                    itrB = splt2.fetch(start=minpos,stop=maxpos)
+                    insert_size = max(lenlist) - lengthX
+                    minpos = min(poslist) 
+                    maxpos = max(poslist) + insert_size # +constant
+                    itrB = splt2.fetch(nameX, minpos, maxpos)
                    
                     while (True):
 
