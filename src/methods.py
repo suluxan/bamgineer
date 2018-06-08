@@ -210,7 +210,7 @@ def re_pair_reads(bamsortfn, copy_number):
 
                         readB = itrB.next()
 
-                        if readB.qname in readsinblock or (readB.pos < maxpos or readB.pos > minpos):
+                        if readB.qname in readsinblock or (readB.pos < maxpos and readB.pos > minpos):
                             listb.append(readB)
 
                         if len(listb) == block_size:
