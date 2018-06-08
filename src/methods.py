@@ -226,13 +226,16 @@ def re_pair_reads(bamsortfn, copy_number):
 
                             tlenFR = tmpB.pos - tmpA.pos + tmpB.qlen
                             tlenRF = tmpA.pos - tmpB.pos + tmpA.qlen
+                            read_length_A = tmpA.tlen
+                            read_length_B = tmpB.tlen
+                            read_length_average = (read_length_A + read_length_B)/2
 
                             if readA.qname != readB.qname:
 
                                 tmpqname = str(uuid4())
 
                                 if strand == 'pos':
-                                    if tlenFR >= abs(tmpB.tlen) - coff * sigma and tlenFR < abs(tmpB.tlen) + coff * sigma:
+                                    if tlenFR >= abs(read_length_average) - coff * sigma and tlenFR < abs(read_length_average) + coff * sigma:
                                         tmpA.tlen = tlenFR
                                         tmpB.tlen = -tlenFR
                                         tmpA.pnext = tmpB.pos
@@ -244,7 +247,7 @@ def re_pair_reads(bamsortfn, copy_number):
                                         writtenreads.append(tmpB.qname)
 
                                 elif strand == 'neg':
-                                    if tlenRF >= abs(tmpB.tlen) - coff * sigma and tlenRF < abs(tmpB.tlen) + coff * sigma:
+                                    if tlenRF >= abs(read_length_average) - coff * sigma and tlenRF < abs(read_length_average) + coff * sigma:
                                         tmpA.tlen = -tlenRF
                                         tmpB.tlen = tlenRF
                                         tmpA.pnext = tmpB.pos
